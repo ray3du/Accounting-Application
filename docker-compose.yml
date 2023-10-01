@@ -1,0 +1,29 @@
+version: '3.2'
+
+
+services:
+  db:
+    image: postgres:14-alpine
+    ports:
+      - '5432:5432'
+
+  frontend:
+    build:
+      context: .
+      dockerfile: ./frontend/Dockerfile
+    ports:
+      - '3000:3000'
+
+    volumes:
+      - .:/app/backend
+
+  backend:
+    build: .
+    ports:
+      - '8000:8000'
+
+    depends_on:
+      - frontend
+
+    volumes:
+      - .:/app/backend
